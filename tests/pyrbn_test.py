@@ -8,6 +8,8 @@ def test_from_random():
     rbn = pyrbn.RBN.from_random(rng, 5)
     assert rbn is not None
     assert rbn.n == 5
+    rbn2 = pyrbn.RBN.from_random(random.Random(42), 5)
+    assert rbn == rbn2
 
 
 def test_next_state():

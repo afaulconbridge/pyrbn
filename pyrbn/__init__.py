@@ -41,6 +41,19 @@ class RBN:
 
         return clzz(states, inputs, funcs)
 
+    def __eq__(self, other):
+        if other is self:
+            return True
+        if not isinstance(other, type(self)):
+            return False
+        if self.states != other.states:
+            return False
+        if self.inputs != other.inputs:
+            return False
+        if self.funcs != other.funcs:
+            return False
+        return True
+
     def __repr__(self):
         return "{}({}, {}, {})".format(
             type(self).__name__, self.states, self.inputs, self.funcs
@@ -56,15 +69,19 @@ class RBN:
             ]
         )
 
-    def find_cycle(self, state=None):
+    def find_path_and_cycle(self, state=None):
         if state is None:
             state = self.states
         current_state = state
         next_state = self.next_state(current_state)
-        seen = {current_state: next_state}
+        seen = [current_state]
         while next_state not in seen:
-            seen[current_state] = next_state
+            seen.append(next_state)
             current_state = next_state
             next_state = self.next_state(current_state)
 
-        return seen
+        i = seen.index(next_state)
+        return (seen[:i], seen[i:])
+
+    def find_cycle(self, state=None):
+        return self.find_path_and_cycle(state)[1]
