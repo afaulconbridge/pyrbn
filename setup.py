@@ -17,6 +17,8 @@ setup(
             "pip-tools",
             "pipdeptree",
             "pre-commit",
-        ]
+            "snakeviz",
+        ],
+        "numpy": ["numpy"],
     },
 )

@@ -14,6 +14,12 @@ pip install -e .[dev]
 TODO
 ----
 
+enable pre-commit hooks with:
+
+```sh
+pre-commit install
+```
+
 implement backends with
  - [networkx](https://networkx.github.io/documentation/stable/)
  - [python-igraph](https://igraph.org/python/)
