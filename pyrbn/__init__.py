@@ -1,5 +1,4 @@
 from .basic import RBNBasic
-from .fast import RBNFast
 
 try:
     from .numpy import RBNNumpy

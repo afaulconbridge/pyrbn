@@ -48,7 +48,7 @@ def main():
         writer.writerow(fieldnames)
         Timing = collections.namedtuple("Timing", fieldnames)
         timings = []
-        clzzes = [RBNNumpy, RBNFast, RBNBasic]
+        clzzes = [RBNBasic, RBNNumpy]
         ns = (10, 100, 1000)
         ks = (2, 5)
         for clzz in clzzes:
