@@ -20,6 +20,12 @@ enable pre-commit hooks with:
 pre-commit install
 ```
 
+freeze dependencies with:
+
+```sh
+pip-compile
+```
+
 implement backends with
  - [networkx](https://networkx.github.io/documentation/stable/)
  - [python-igraph](https://igraph.org/python/)
