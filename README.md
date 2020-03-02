@@ -11,20 +11,20 @@ Install using pip including development extras
 pip install -e .[dev]
 ```
 
-TODO
-----
-
-enable pre-commit hooks with:
+Enable pre-commit hooks with:
 
 ```sh
 pre-commit install
 ```
 
-freeze dependencies with:
+Freeze dependencies with:
 
 ```sh
 pip-compile
 ```
+
+TODO
+----
 
 implement backends with
  - [networkx](https://networkx.github.io/documentation/stable/)
