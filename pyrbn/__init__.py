@@ -20,8 +20,8 @@ class RBN:
         assert self.k == max((len(i) for i in inputs))
         assert self.k == min((len(i) for i in inputs))
         assert self.n == len(funcs)
-        assert self.n > max(itertools.chain(*inputs))
-        assert 0 >= min(itertools.chain(*inputs))
+        assert self.n > max(itertools.chain(*inputs)), "an input is more than n"
+        assert 0 <= min(itertools.chain(*inputs)), "an input is less than zero"
         self.states = tuple(states)
         self.inputs = tuple(inputs)
         self.funcs = funcs
@@ -69,7 +69,7 @@ class RBN:
             ]
         )
 
-    def find_path_and_cycle(self, state=None):
+    def get_path_and_cycle(self, state=None):
         if state is None:
             state = self.states
         current_state = state
@@ -83,5 +83,5 @@ class RBN:
         i = seen.index(next_state)
         return (seen[:i], seen[i:])
 
-    def find_cycle(self, state=None):
-        return self.find_path_and_cycle(state)[1]
+    def get_cycle(self, state=None):
+        return self.get_path_and_cycle(state)[1]
