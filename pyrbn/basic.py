@@ -79,13 +79,17 @@ class RBNBasic:
     def get_path_and_cycle(self, state=None):
         if state is None:
             state = self.states
+
+        seen = [state]
+        seen_set = set(seen)
+
         current_state = state
         next_state = self.next_state(current_state)
-        seen = [current_state]
-        seen_set = set(seen)
+
         while next_state not in seen_set:
             seen.append(next_state)
-            seen_set.add(tuple(next_state))
+            seen_set.add(next_state)
+
             current_state = next_state
             next_state = self.next_state(current_state)
 

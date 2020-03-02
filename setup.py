@@ -8,7 +8,7 @@ setup(
     packages=["pyrbn"],
     description="pyrbn is a python random boolean network library.",
     long_description=open("README.md").read(),
-    install_requires=[],
+    install_requires=["cachetools"],
     extras_require={
         "dev": [
             "pytest-cov",

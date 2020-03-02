@@ -1,4 +1,5 @@
 from .basic import RBNBasic
+from .cached import RBNCached
 
 try:
     from .numpy import RBNNumpy
@@ -8,3 +9,6 @@ except ImportError:
 
 # try to auto-detect the best implementation
 RBN = RBNBasic
+
+
+__all__ = ("RBN", "RBNBasic", "RBNCached")
