@@ -31,7 +31,7 @@ class RBNBasic:
         states = [rng.random() >= 0.5 for i in range(n)]
         inputs = tuple(zip(*(list(rng.sample(range(n), n)) for i in range(k))))
         funcs = []
-        keys = tuple(itertools.product((True, False), repeat=2))
+        keys = tuple(itertools.product((True, False), repeat=k))
         for i in range(n):
             func = {}
             for key in keys:
