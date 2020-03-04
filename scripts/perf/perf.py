@@ -39,8 +39,8 @@ def main():
             timings["i"] = timings["i"].astype("int64")
             timings["j"] = timings["j"].astype("int64")
             timings["steptime"] = timings["steptime"].astype("float64")
-            # now that we have the data, analyze it
-            print(timings.groupby(["cls", "n"]).mean()["steptime"])
+
+            # plot cycle length
 
     except FileNotFoundError:
         # no data, generate it
