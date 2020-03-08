@@ -1,7 +1,9 @@
+import functools
 import itertools
 from typing import List, Tuple
 
 
+@functools.total_ordering
 class RBNBasic:
     states: Tuple[bool] = ()
     inputs: Tuple[Tuple[int]] = ()
@@ -52,6 +54,17 @@ class RBNBasic:
         if self.funcs != other.funcs:
             return False
         return True
+
+    def __lt__(self, other):
+        if self.states < other.states:
+            return True
+        if self.inputs < other.inputs:
+            return True
+        if self.funcs < other.funcs:
+            return True
+
+    def __hash__(self):
+        return hash((self.funcs, self.inputs, self.states))
 
     def __repr__(self):
         return "{}({}, {}, {})".format(
