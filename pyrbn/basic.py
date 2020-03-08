@@ -26,7 +26,7 @@ class RBNBasic:
 
         # TODO sort nodes on creation
         self.states = tuple(states)
-        self.inputs = tuple(inputs)
+        self.inputs = tuple(map(tuple, inputs))
         self.funcs = tuple(map(tuple, funcs))
 
         # pre compute powers of two
