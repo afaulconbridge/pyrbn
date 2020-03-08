@@ -1,5 +1,6 @@
 from .basic import RBNBasic
 from .cached import RBNCached
+from .sorted import RBNSorted
 
 try:
     from .numpy import RBNNumpy
@@ -11,4 +12,4 @@ except ImportError:
 RBN = RBNBasic
 
 
-__all__ = ("RBN", "RBNBasic", "RBNCached")
+__all__ = ("RBN", "RBNBasic", "RBNCached", "RBNSorted")
