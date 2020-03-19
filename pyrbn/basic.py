@@ -56,12 +56,15 @@ class RBNBasic:
         return True
 
     def __lt__(self, other):
+        if other is self:
+            return False
         if self.states < other.states:
             return True
         if self.inputs < other.inputs:
             return True
         if self.funcs < other.funcs:
             return True
+        return False
 
     def __hash__(self):
         return hash((self.funcs, self.inputs, self.states))
@@ -107,7 +110,7 @@ class RBNBasic:
             next_state = self.next_state(current_state)
 
         i = seen.index(next_state)
-        return (seen[:i], seen[i:])
+        return (tuple(seen[:i]), tuple(seen[i:]))
 
     def get_cycle(self, state=None):
         return self.get_path_and_cycle(state)[1]
