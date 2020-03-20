@@ -18,6 +18,7 @@ setup(
             "pipdeptree",
             "pre-commit",
             "snakeviz",
+            "mypy",
         ],
         "numpy": ["numpy"],
     },
