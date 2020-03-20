@@ -10,6 +10,9 @@ class RBNBasic:
     funcs: Tuple[Tuple[bool]] = ()
     pows: List[int] = []
 
+    __hash = None  # store hash once calculated
+    __key = ()  # store common key used for equality, ordering, hashing
+
     def __init__(
         self, states: Tuple[bool], inputs: Tuple[int], funcs: Tuple[Tuple[bool]]
     ):
@@ -33,6 +36,8 @@ class RBNBasic:
         while self.k >= len(self.pows):
             self.pows.append(2 ** (len(self.pows)))
 
+        self.__key = (self.states, self.inputs, self.funcs)
+
     @classmethod
     def from_random(clzz, rng, n=5, k=2):
         states = [rng.random() >= 0.5 for i in range(n)]
@@ -43,31 +48,22 @@ class RBNBasic:
         return clzz(states, inputs, funcs)
 
     def __eq__(self, other):
-        if other is self:
+        if self is other:
             return True
-        if not isinstance(other, type(self)):
-            return False
-        if self.states != other.states:
-            return False
-        if self.inputs != other.inputs:
-            return False
-        if self.funcs != other.funcs:
-            return False
-        return True
+
+        return self.__key == other.__key
 
     def __lt__(self, other):
-        if other is self:
+        if self is other:
             return False
-        if self.states < other.states:
-            return True
-        if self.inputs < other.inputs:
-            return True
-        if self.funcs < other.funcs:
-            return True
-        return False
+
+        return self.__key < other.__key
 
     def __hash__(self):
-        return hash((self.funcs, self.inputs, self.states))
+        if not self.__hash:
+            self.__hash = hash(self.__key)
+
+        return self.__hash
 
     def __repr__(self):
         return "{}({}, {}, {})".format(
