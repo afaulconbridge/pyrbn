@@ -1,20 +1,23 @@
 import functools
 import itertools
-from typing import List, Tuple
+from typing import Collection, Iterable, List, Sequence, Tuple
 
 
 @functools.total_ordering
 class RBNBasic:
-    states: Tuple[bool] = ()
-    inputs: Tuple[Tuple[int]] = ()
-    funcs: Tuple[Tuple[bool]] = ()
+    states: Tuple[bool]
+    inputs: Tuple[Tuple[int]]
+    funcs: Tuple[Tuple[bool]]
     pows: List[int] = []
 
     __hash = None  # store hash once calculated
     __key = ()  # store common key used for equality, ordering, hashing
 
     def __init__(
-        self, states: Tuple[bool], inputs: Tuple[int], funcs: Tuple[Tuple[bool]]
+        self,
+        states: Sequence[bool],
+        inputs: Sequence[Sequence[int]],
+        funcs: Sequence[Sequence[bool]],
     ):
         self.n = len(states)
         assert self.n == len(inputs)
@@ -32,7 +35,7 @@ class RBNBasic:
         self.inputs = tuple(map(tuple, inputs))
         self.funcs = tuple(map(tuple, funcs))
 
-        # pre compute powers of two
+        # pre compute powers of two on the class
         while self.k >= len(self.pows):
             self.pows.append(2 ** (len(self.pows)))
 

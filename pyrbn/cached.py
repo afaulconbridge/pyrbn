@@ -1,6 +1,6 @@
-from typing import List, Tuple
+from typing import Tuple
 
-import cachetools
+import cachetools  # type: ignore
 
 from .basic import RBNBasic
 
