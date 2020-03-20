@@ -1,14 +1,29 @@
-from typing import List, Tuple
-
-import cachetools
+from typing import Iterable
 
 from .basic import RBNBasic
 
 
 class RBNSorted(RBNBasic):
     def __init__(
-        self, states: Tuple[bool], inputs: Tuple[int], funcs: Tuple[Tuple[bool]]
+        self,
+        states: Iterable[bool],
+        inputs: Iterable[int],
+        funcs: Iterable[Iterable[bool]],
     ):
+
+        # swap functions if necessary
+        funcs = tuple(funcs)
+        inputs = list(inputs)
+        for i in range(len(funcs)):
+            # 00 0
+            # 01 1 } swap if { True
+            # 10 2 }         { False
+            # 11 3
+
+            if funcs[i][1] and not funcs[i][2]:
+                funcs[i][1] = False
+                funcs[i][2] = True
+
         # sort the inputs and update accordingly
         node_mapping = [
             x[0] for x in sorted(enumerate(zip(funcs, inputs)), key=lambda x: x[1])
