@@ -1,6 +1,6 @@
 import functools
 import itertools
-from typing import Collection, Iterable, List, Sequence, Tuple
+from typing import List, Sequence, Tuple
 
 
 @functools.total_ordering
