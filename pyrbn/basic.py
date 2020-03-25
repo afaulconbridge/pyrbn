@@ -51,18 +51,30 @@ class RBNBasic:
         return clzz(states, inputs, funcs)
 
     def __eq__(self, other):
+        """
+        Will only return true if nodes have the same order
+        i.e. does *NOT* respect isomorphism
+        """
         if self is other:
             return True
 
         return self.__key == other.__key
 
     def __lt__(self, other):
+        """
+        Will only work as intended if nodes have the same order
+        i.e. does *NOT* respect isomorphism
+        """
         if self is other:
             return False
 
         return self.__key < other.__key
 
     def __hash__(self):
+        """
+        Will only work as intended if nodes have the same order
+        i.e. does *NOT* respect isomorphism
+        """
         if not self.__hash:
             self.__hash = hash(self.__key)
 
