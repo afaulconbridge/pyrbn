@@ -1,6 +1,5 @@
 from .basic import RBNBasic
 from .cached import RBNCached
-from .sorted import RBNSorted
 
 try:
     from .numpy import RBNNumpy
