@@ -1,14 +1,9 @@
-from .basic import RBNBasic
-from .cached import RBNCached
+from .basic import BooleanNetwork, BooleanNetworkStructure
 
 try:
     from .numpy import RBNNumpy
 except ImportError:
     pass
-    # unable to import numpy probably
+    # probably unable to import numpy
 
-# try to auto-detect the best implementation
-RBN = RBNBasic
-
-
-__all__ = ("RBN", "RBNBasic", "RBNCached", "RBNSorted")
+__all__ = ("BooleanNetwork", "BooleanNetworkStructure")

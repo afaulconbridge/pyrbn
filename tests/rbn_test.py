@@ -5,21 +5,23 @@ import pyrbn
 
 def test_from_random():
     rng = random.Random(42)
-    rbn = pyrbn.RBN.from_random(rng, 5)
+    rbn = pyrbn.BooleanNetwork.from_random(rng, 5)
     assert rbn is not None
     assert rbn.n == 5
 
 
 def test_next_state():
-    rbn = pyrbn.RBN(
+    rbn = pyrbn.BooleanNetwork(
         (True, False, False, False, True),
-        ((4, 0), (0, 4), (2, 3), (1, 2), (3, 1)),
-        (
-            (False, True, True, True),
-            (True, True, False, False),
-            (False, False, False, False),
-            (False, False, False, True),
-            (False, False, False, True),
+        pyrbn.BooleanNetworkStructure(
+            ((4, 0), (0, 4), (2, 3), (1, 2), (3, 1)),
+            (
+                (False, True, True, True),
+                (True, True, False, False),
+                (False, False, False, False),
+                (False, False, False, True),
+                (False, False, False, True),
+            ),
         ),
     )
     next_state = rbn.next_state()
@@ -28,15 +30,17 @@ def test_next_state():
 
 
 def test_path_and_cycle():
-    rbn = pyrbn.RBN(
+    rbn = pyrbn.BooleanNetwork(
         (True, False, False, False, True),
-        ((4, 0), (0, 4), (2, 3), (1, 2), (3, 1)),
-        (
-            (False, True, True, True),
-            (True, True, False, False),
-            (False, False, False, False),
-            (False, False, False, True),
-            (False, False, False, True),
+        pyrbn.BooleanNetworkStructure(
+            ((4, 0), (0, 4), (2, 3), (1, 2), (3, 1)),
+            (
+                (False, True, True, True),
+                (True, True, False, False),
+                (False, False, False, False),
+                (False, False, False, True),
+                (False, False, False, True),
+            ),
         ),
     )
     path, cycle = rbn.get_path_and_cycle()
@@ -45,26 +49,30 @@ def test_path_and_cycle():
 
 
 def test_eq():
-    rbna = pyrbn.RBN(
+    rbna = pyrbn.BooleanNetwork(
         (True, False, False, False, True),
-        ((4, 0), (0, 4), (2, 3), (1, 2), (3, 1)),
-        (
-            (False, True, True, True),
-            (True, True, False, False),
-            (False, False, False, False),
-            (False, False, False, True),
-            (False, False, False, True),
+        pyrbn.BooleanNetworkStructure(
+            ((4, 0), (0, 4), (2, 3), (1, 2), (3, 1)),
+            (
+                (False, True, True, True),
+                (True, True, False, False),
+                (False, False, False, False),
+                (False, False, False, True),
+                (False, False, False, True),
+            ),
         ),
     )
-    rbnb = pyrbn.RBN(
+    rbnb = pyrbn.BooleanNetwork(
         (True, False, False, False, True),
-        ((4, 0), (0, 4), (2, 3), (1, 2), (3, 1)),
-        (
-            (False, True, True, True),
-            (True, True, False, False),
-            (False, False, False, False),
-            (False, False, False, True),
-            (False, False, False, True),
+        pyrbn.BooleanNetworkStructure(
+            ((4, 0), (0, 4), (2, 3), (1, 2), (3, 1)),
+            (
+                (False, True, True, True),
+                (True, True, False, False),
+                (False, False, False, False),
+                (False, False, False, True),
+                (False, False, False, True),
+            ),
         ),
     )
     assert rbna is rbna
@@ -76,40 +84,46 @@ def test_eq():
 
 
 def test_lt():
-    rbna = pyrbn.RBN(
+    rbna = pyrbn.BooleanNetwork(
         (True, False, False, False, True),
-        ((4, 0), (0, 4), (2, 3), (1, 2), (3, 1)),
-        (
-            (False, True, True, True),
-            (True, True, False, False),
-            (False, False, False, False),
-            (False, False, False, True),
-            (False, False, False, True),
+        pyrbn.BooleanNetworkStructure(
+            ((4, 0), (0, 4), (2, 3), (1, 2), (3, 1)),
+            (
+                (False, True, True, True),
+                (True, True, False, False),
+                (False, False, False, False),
+                (False, False, False, True),
+                (False, False, False, True),
+            ),
         ),
     )
-    rbnb = pyrbn.RBN(
+    rbnb = pyrbn.BooleanNetwork(
         (False, False, False, False, True),
-        ((4, 0), (0, 4), (2, 3), (1, 2), (3, 1)),
-        (
-            (False, True, True, True),
-            (True, True, False, False),
-            (False, False, False, False),
-            (False, False, False, True),
-            (False, False, False, True),
+        pyrbn.BooleanNetworkStructure(
+            ((4, 0), (0, 4), (2, 3), (1, 2), (3, 1)),
+            (
+                (False, True, True, True),
+                (True, True, False, False),
+                (False, False, False, False),
+                (False, False, False, True),
+                (False, False, False, True),
+            ),
         ),
     )
     assert rbna != rbnb
     assert rbna > rbnb
     assert rbnb < rbna
-    rbnc = pyrbn.RBN(
+    rbnc = pyrbn.BooleanNetwork(
         (True, False, False, False, True),
-        ((4, 0), (0, 4), (2, 3), (1, 1), (3, 1)),
-        (
-            (False, True, True, True),
-            (True, True, False, False),
-            (False, False, False, False),
-            (False, False, False, True),
-            (False, False, False, True),
+        pyrbn.BooleanNetworkStructure(
+            ((4, 0), (0, 4), (2, 3), (1, 1), (3, 1)),
+            (
+                (False, True, True, True),
+                (True, True, False, False),
+                (False, False, False, False),
+                (False, False, False, True),
+                (False, False, False, True),
+            ),
         ),
     )
     assert rbna != rbnc

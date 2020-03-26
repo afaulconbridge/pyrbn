@@ -1,9 +1,12 @@
 import functools
 import itertools
+import json
 from typing import List, Sequence, Tuple
 
+from .json import JSONDecodable
 
-class BooleanNetworkStructure:
+
+class BooleanNetworkStructure(JSONDecodable):
     # TODO use __new__ and weakref to prevent duplicates
     # see https://docs.python.org/3/reference/datamodel.html#object.__new__
     # see https://docs.python.org/3/library/weakref.html#weakref.WeakValueDictionary
@@ -96,9 +99,23 @@ class BooleanNetworkStructure:
     def __repr__(self):
         return "{}({}, {})".format(type(self).__name__, self.inputs, self.funcs)
 
+    class JSONEncoder(json.JSONEncoder):
+        def default(self, obj):
+            return {"inputs": obj.inputs, "funcs": obj.funcs}
+
+    jsonencoder = JSONEncoder()
+
+    @classmethod
+    def _decode_test(clzz, dct):
+        return "inputs" in dct and "funcs" in dct
+
+    @classmethod
+    def _decode(clzz, dct):
+        return clzz(dct["inputs"], dct["funcs"])
+
 
 @functools.total_ordering
-class RBNBasic:
+class BooleanNetwork(JSONDecodable):
     # TODO use __new__ and weakref to prevent duplicates
     # see https://docs.python.org/3/reference/datamodel.html#object.__new__
     # see https://docs.python.org/3/library/weakref.html#weakref.WeakValueDictionary
@@ -108,14 +125,9 @@ class RBNBasic:
     __hash = None  # store hash once calculated
     __key = ()  # store common key used for equality, ordering, hashing
 
-    def __init__(
-        self,
-        states: Sequence[bool],
-        inputs: Sequence[Sequence[int]],
-        funcs: Sequence[Sequence[bool]],
-    ):
+    def __init__(self, states: Sequence[bool], struct: BooleanNetworkStructure):
         self.states = tuple(states)
-        self.struct = BooleanNetworkStructure(inputs, funcs)
+        self.struct = struct
 
         self.__key = (self.states, self.struct)
 
@@ -123,7 +135,7 @@ class RBNBasic:
     def from_random(clzz, rng, n=5, k=2):
         states = [rng.random() >= 0.5 for i in range(n)]
         struct = BooleanNetworkStructure.from_random(rng)
-        return clzz(states, struct.inputs, struct.funcs)
+        return clzz(states, struct)
 
     @property
     def n(self):
@@ -172,9 +184,7 @@ class RBNBasic:
         return self.__hash
 
     def __repr__(self):
-        return "{}({}, {}, {})".format(
-            type(self).__name__, self.states, self.inputs, self.funcs
-        )
+        return "{}({}, {})".format(type(self).__name__, self.states, self.struct)
 
     def next_state(self, state=None):
         if state is None:
@@ -203,3 +213,18 @@ class RBNBasic:
 
     def get_cycle(self, state=None):
         return self.get_path_and_cycle(state)[1]
+
+    jsonencoder = json.JSONEncoder(
+        default=lambda obj: {
+            "states": obj.states,
+            "struct": obj.struct.jsonencoder.default(obj.struct),
+        }
+    )
+
+    @classmethod
+    def _decode_test(clzz, dct):
+        return "states" in dct and "struct" in dct
+
+    @classmethod
+    def _decode(clzz, dct):
+        return clzz(dct["states"], dct["struct"])
