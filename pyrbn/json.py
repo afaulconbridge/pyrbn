@@ -44,11 +44,15 @@ class JSONDecodable:
         if cls_to_use:
             return cls_to_use._decode(dct)
         else:
-            raise ValueError
+            raise JSONDecodableNotFoundException
 
 
 jsondecoder = json.JSONDecoder(object_hook=JSONDecodable.object_hook)
 
 
 class JSONDecodableConflictException(Exception):
+    pass
+
+
+class JSONDecodableNotFoundException(Exception):
     pass
