@@ -16,12 +16,7 @@ class RBNNumpy(RBNBasic):
     funcs_fast = None
     pows = []
 
-    def __init__(
-        self,
-        states: Tuple[bool],
-        inputs: Tuple[int],
-        funcs: Tuple[Dict[Tuple[bool], bool]],
-    ):
+    def __init__(self, states: Tuple[bool], inputs: Tuple[int], funcs: Tuple[Dict[Tuple[bool], bool]]):
         super(RBNNumpy, self).__init__(states, inputs, funcs)
 
         # pre compute powers of two
@@ -30,14 +25,10 @@ class RBNNumpy(RBNBasic):
 
         # convert funcs into a 2D array for quicker lookup
         # note this assumes funcs keys is in sorted order
-        self.funcs_fast = np.array(
-            [[f[key] for key in f.keys()] for f in funcs], np.int32
-        )
+        self.funcs_fast = np.array([[f[key] for key in f.keys()] for f in funcs], np.int32)
 
         self.inputs = np.array(self.inputs, np.int32)
-        self.states = np.array(
-            self.states, np.int32
-        )  # use an int so we can multiply later
+        self.states = np.array(self.states, np.int32)  # use an int so we can multiply later
 
     def next_state(self, state=None):
         if state is None:

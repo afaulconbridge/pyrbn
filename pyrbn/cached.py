@@ -6,9 +6,7 @@ from .basic import RBNBasic
 
 
 class RBNCached(RBNBasic):
-    def __init__(
-        self, states: Tuple[bool], inputs: Tuple[int], funcs: Tuple[Tuple[bool]]
-    ):
+    def __init__(self, states: Tuple[bool], inputs: Tuple[int], funcs: Tuple[Tuple[bool]]):
         super(RBNCached, self).__init__(states, inputs, funcs)
         self.cache_state = cachetools.LRUCache(32768)
 

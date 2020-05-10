@@ -19,9 +19,7 @@ class BooleanNetworkStructure(JSONDecodable):
     __hash = None  # store hash once calculated
     __key = ()  # store common key used for equality, ordering, hashing
 
-    def __init__(
-        self, inputs: Sequence[Sequence[int]], funcs: Sequence[Sequence[bool]]
-    ):
+    def __init__(self, inputs: Sequence[Sequence[int]], funcs: Sequence[Sequence[bool]]):
         self.n = len(inputs)
         assert self.n == len(inputs)
         assert self.n > 0
@@ -45,25 +43,12 @@ class BooleanNetworkStructure(JSONDecodable):
     @classmethod
     def from_random(clzz, rng, n=5, k=2):
         inputs = tuple(zip(*(list(rng.sample(range(n), n)) for i in range(k))))
-        funcs = tuple(
-            (tuple((rng.random() >= 0.5 for j in range(2 ** k))) for i in range(n))
-        )
+        funcs = tuple((tuple((rng.random() >= 0.5 for j in range(2 ** k))) for i in range(n)))
         return clzz(inputs, funcs)
 
     def next_state(self, state):
         return tuple(
-            (
-                self.funcs[i][
-                    sum(
-                        (
-                            self.pows[j]
-                            for j in range(self.k)
-                            if state[self.inputs[i][j]]
-                        )
-                    )
-                ]
-                for i in range(self.n)
-            )
+            (self.funcs[i][sum((self.pows[j] for j in range(self.k) if state[self.inputs[i][j]]))] for i in range(self.n))
         )
 
     def __eq__(self, other):
@@ -215,10 +200,7 @@ class BooleanNetwork(JSONDecodable):
         return self.get_path_and_cycle(state)[1]
 
     jsonencoder = json.JSONEncoder(
-        default=lambda obj: {
-            "states": obj.states,
-            "struct": obj.struct.jsonencoder.default(obj.struct),
-        }
+        default=lambda obj: {"states": obj.states, "struct": obj.struct.jsonencoder.default(obj.struct)}
     )
 
     @classmethod
